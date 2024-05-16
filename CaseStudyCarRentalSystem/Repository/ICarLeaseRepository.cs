@@ -13,6 +13,7 @@ namespace CaseStudyCarRentalSystem.Repository
     {
         // Car Management
         int AddCar(Car car);
+        int UpdateCar(int CarID);
         int RemoveCar(int carID);
         List<Car> ListAvailableCars();
         List<Car> ListRentedCars();
@@ -26,7 +27,7 @@ namespace CaseStudyCarRentalSystem.Repository
         Customer FindCustomerByEmail(string Email);
 
         // Lease Management
-        int CreateLease(int leaseID, int customerID, int carID, DateTime startDate, DateTime endDate, string Type);
+        int CreateLease( int customerID, int carID, DateTime startDate, DateTime endDate, string Type);
         Lease ReturnCar(int leaseID);
         List<Lease> ListActiveLeases();
         List<Lease> ListLeaseHistory();

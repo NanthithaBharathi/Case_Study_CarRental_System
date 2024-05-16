@@ -23,19 +23,10 @@ namespace CaseStudy.Service
             // Create an instance of CarManager
             CarManagement carManager = new CarManagement();
 
-            // Call the ListAvailableCars method
-            List<Car> availableCars = carManager.ListAvailableCars();
-
-            // Use the list of available cars as needed
-            foreach (Car cars in availableCars)
-            {
-                // Process each available car
-                Console.WriteLine($"Available car: {cars.Make} {cars.Model}");
-            }
+            
 
             Console.WriteLine("Enter Car details:");
-            Console.WriteLine("VehicleId: ");
-            int vehicleid = int.Parse(Console.ReadLine());
+            
 
             Console.Write("Make: ");
             string make = Console.ReadLine();
@@ -58,7 +49,7 @@ namespace CaseStudy.Service
             Console.Write("Engine Capacity: ");
             int engineCapacity = int.Parse(Console.ReadLine());
 
-            Car car = new Car(vehicleid, make, model, year, dailyRate, status, passengerCapacity, engineCapacity);
+            Car car = new Car( make, model, year, dailyRate, status, passengerCapacity, engineCapacity);
 
             int AddCarStatus = _CarManagement.AddCar(car);
             if (AddCarStatus > 0)
@@ -113,8 +104,19 @@ namespace CaseStudy.Service
         {
 
             Console.Write("Enter the Car ID: ");
-            int carID = int.Parse(Console.ReadLine());
-            Car car = _CarManagement.FindCarById(carID);
+            Car car = null;
+            try
+            {
+
+                int carID = int.Parse(Console.ReadLine());
+                car = _CarManagement.FindCarById(carID);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid input, integers are only allowed");
+            }
+            
             if (car != null)
             {
                 Console.WriteLine("-------Car Details------");

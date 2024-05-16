@@ -29,10 +29,9 @@ namespace CaseStudyCarRentalSystem.Repository
 
         int ICarLeaseRepository.AddCar(Car car)
         {
-            cmd.CommandText = "INSERT INTO VehicleTable (vehicleid, make, model, year, dailyRate, status, passengerCapacity, engineCapacity) VALUES (@vehicleid, @make, @model, @year, @dailyRate, @status, @passengerCapacity, @engineCapacity)";
+            cmd.CommandText = "INSERT INTO VehicleTable ( make, model, year, dailyRate, status, passengerCapacity, engineCapacity) VALUES (@make, @model, @year, @dailyRate, @status, @passengerCapacity, @engineCapacity)";
 
             cmd.Parameters.Clear();
-            cmd.Parameters.AddWithValue("@vehicleid", car.VehicleID);
             cmd.Parameters.AddWithValue("@make", car.Make);
             cmd.Parameters.AddWithValue("@model", car.Model);
             cmd.Parameters.AddWithValue("@year", car.Year);
@@ -46,6 +45,23 @@ namespace CaseStudyCarRentalSystem.Repository
             int createCarStatus = cmd.ExecuteNonQuery();
             sqlConnection.Close();
             return createCarStatus;
+
+        }
+
+        int ICarLeaseRepository.UpdateCar(int CarID)
+        {
+            cmd.CommandText = "UPDATE VehicleTable SET status = @status WHERE vehicleID = @CarID";
+
+            cmd.Parameters.Clear();
+            cmd.Parameters.AddWithValue("@CarID", CarID);
+            cmd.Parameters.AddWithValue("@status","notAvailable");
+            cmd.Connection = sqlConnection;
+            sqlConnection.Open();
+            int createCarStatus = cmd.ExecuteNonQuery();
+            sqlConnection.Close();
+            return createCarStatus;
+
+
 
         }
 
@@ -344,7 +360,7 @@ namespace CaseStudyCarRentalSystem.Repository
         }
 
 
-        int ICarLeaseRepository.CreateLease(int leaseID, int customerID, int carID, DateTime startDate, DateTime endDate, string type)
+        int ICarLeaseRepository.CreateLease( int customerID, int carID, DateTime startDate, DateTime endDate, string type)
         {
 
             int createLeaseStatus = 0;
@@ -354,10 +370,10 @@ namespace CaseStudyCarRentalSystem.Repository
                 {
                     if (((ICarLeaseRepository)this).FindCarById(carID) != null)
                     {
-                        cmd.CommandText = "INSERT INTO LeaseTable( leaseID, customerID, vehicleID, startDate, endDate, type) VALUES (@leaseID, @customerID, @carID, @startDate, @endDate, @type )";
+                        cmd.CommandText = "INSERT INTO LeaseTable(customerID, vehicleID, startDate, endDate, type) VALUES ( @customerID, @carID, @startDate, @endDate, @type )";
 
                         cmd.Parameters.Clear();
-                        cmd.Parameters.AddWithValue("@leaseID", leaseID);
+                       
                         cmd.Parameters.AddWithValue("@customerID", customerID);
                         cmd.Parameters.AddWithValue("@carID", carID);
                         cmd.Parameters.AddWithValue("@startDate", startDate);
@@ -367,7 +383,9 @@ namespace CaseStudyCarRentalSystem.Repository
                         cmd.Connection = sqlConnection;
 
                         sqlConnection.Open();
+
                         createLeaseStatus = cmd.ExecuteNonQuery();
+                        sqlConnection.Close();
                         return createLeaseStatus;
 
                     }
@@ -509,8 +527,7 @@ namespace CaseStudyCarRentalSystem.Repository
             try
             {
                 // Insert payment record into the Payment table
-                cmd.CommandText = "INSERT INTO PaymentTable (paymentID, leaseID, paymentDate, amount) VALUES (@paymentId, @LeaseID, @PaymentDate, @Amount)";
-                cmd.Parameters.AddWithValue("@PaymentID", payment.PaymentID);
+                cmd.CommandText = "INSERT INTO PaymentTable (leaseID, paymentDate, amount) VALUES (@LeaseID, @PaymentDate, @Amount)";
                 cmd.Parameters.AddWithValue("@LeaseID", payment.LeaseID);
                 cmd.Parameters.AddWithValue("@PaymentDate", DateTime.Now);
                 cmd.Parameters.AddWithValue("@Amount", amount);

@@ -17,7 +17,6 @@ namespace CaseStudy.Service
         }
         public void AddCustomer()
         {
-            ListCustomers();
             Console.WriteLine("Enter customer details:");
             Console.Write("First Name: ");
             string firstName = Console.ReadLine();
@@ -32,6 +31,12 @@ namespace CaseStudy.Service
             string phoneNumber = Console.ReadLine();
 
             Customer alreadyExists = _CustomerManagement.FindCustomerByEmail(email);
+
+            if (alreadyExists.CustomerID > 0)
+            {
+                Console.WriteLine("Customer Already Exists");
+                return;
+            }
 
             Customer customer = new Customer(firstName, lastName, email, phoneNumber);
 
@@ -76,8 +81,21 @@ namespace CaseStudy.Service
         public void FindCustomerById()
         {
             Console.Write("Enter the customerID id: ");
-            int customerID = int.Parse(Console.ReadLine());
-            Customer customer = _CustomerManagement.FindCustomerById(customerID);
+            Customer customer = null;
+            try
+            {
+                int customerID = int.Parse(Console.ReadLine());
+                customer = _CustomerManagement.FindCustomerById(customerID);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Invalid input, integers are only allowed");
+            }
+               
+            
+            
+
+            
             if (customer != null)
             {
                 Console.WriteLine(customer);

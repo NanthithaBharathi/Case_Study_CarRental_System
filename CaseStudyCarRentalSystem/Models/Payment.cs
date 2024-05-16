@@ -13,9 +13,8 @@ namespace CaseStudy
         public DateTime PaymentDate { get; set; }
         public decimal Amount { get; set; }
 
-        public Payment(int paymentID, int leaseID, DateTime paymentDate, decimal amount)
+        public Payment( int leaseID, DateTime paymentDate, decimal amount)
         {
-            PaymentID = paymentID;
             LeaseID = leaseID;
             PaymentDate = paymentDate;
             Amount = amount;

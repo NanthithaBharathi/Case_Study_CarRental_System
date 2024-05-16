@@ -18,9 +18,9 @@ namespace CaseStudy
         public int PassengerCapacity { get; set; }
         public int EngineCapacity { get; set; }
 
-        public Car(int vehicleID, string make, string model, int year, decimal dailyRate, string status, int passengerCapacity, int engineCapacity)
+        public Car( string make, string model, int year, decimal dailyRate, string status, int passengerCapacity, int engineCapacity)
         {
-            VehicleID = vehicleID;
+            
             Make = make;
             Model = model;
             Year = year;

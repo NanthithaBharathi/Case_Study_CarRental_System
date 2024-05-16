@@ -19,8 +19,7 @@ namespace CaseStudy.Service
         public void recordPayment()
         {
             Console.WriteLine("Enter payment details:");
-            Console.Write("Payment ID: ");
-            int PaymentId = int.Parse(Console.ReadLine());
+           
 
             Console.WriteLine("Enter Lease ID:");
             int leaseID = int.Parse(Console.ReadLine());
@@ -31,11 +30,13 @@ namespace CaseStudy.Service
             Console.Write("Payment Amount: ");
             decimal amount = decimal.Parse(Console.ReadLine());
 
-            // Create Lease object using user input
-            Payment payment = new Payment(PaymentId, leaseID, paymentDate, amount);
+            List<Lease> activeLease = _PaymentManagement.ListActiveLeases();
+
+            //Create Lease object using user input
+           Payment payment = new Payment(leaseID, paymentDate, amount);
 
 
-            _PaymentManagement.RecordPayment(payment, amount);
+           PaymentManagement.RecordPayment(payment, amount);
             
 
             Console.WriteLine("Payment created successfully");
